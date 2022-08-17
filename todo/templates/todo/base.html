@@ -1,83 +1,39 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    {% if title %}
-        <title>{{ title }}</title>
-    {% else %}
-        <title>To Do</title>
-    {% endif %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'todo/style.css' %}">
-    <script type="text/javascript">
-        window.history.forward();
-        function noBack() {
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>To Do</title>
+        {% endif %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+        <!--link rel="stylesheet" type="text/css" href="{% static 'todo/style.css' %}"-->
+        <script type="text/javascript">
             window.history.forward();
-        }
-    </script>
-</head>
+            function noBack() {
+                window.history.forward();
+            }
+        </script>
+    </head>
 <body>
-    <div class="root">
-    {% block topBar %}
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid d-flex">
-            <a href="" class="navbar-brand justify-content-start">To Do</a>
-            <form class="d-flex justify-content-center">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-warning" type="submit">Search</button>
-            </form>
-            <i class="bi bi-person-circle account-icon justify-content-end"></i>
-        </div>
-    </nav>
-    {% endblock topBar %}
-    <div class="container-fluid p-0">
-        <div class="pan d-inline-flex">
-            <div class="sideBar">
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show">
+                {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="content">
-                <div class="card m-auto mt-2" style="width: 96%;">
-                    <div class="card-body p-0">
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            <input type="text" name="task" class="form-control test" placeholder="Add a Task">
-                            <div class="card-body lower-card row px-3" style="background: #f3f2f1;">
-                                <!--a href="" class="btn col-auto p-0 m-auto" style="padding: 0rem"><i class="bi bi-calendar-check m-auto"></i></a-->
-                                <div class="col-auto m-auto p-0">
-                                    <a class="btn col-auto p-0 m-auto" style="padding: 0rem" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-calendar-check m-auto"></i></a>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                      <li><a class="dropdown-item" href="#">Today</a></li>
-                                      <li><a class="dropdown-item" href="#">Tomorrow</a></li>
-                                      <li><a class="dropdown-item" href="#">Next Week</a></li>
-                                      <li><hr class="dropdown-divider"></li>
-                                      <input type="date" class="form-control" name="due_date">
-                                    </ul>
-                                </div>                                  
-                                <span class="col"></span>
-                                <button class="btn btn-success col-auto m-auto" type="submit">Add</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                {% for task in tasks%}
-                    <div class="card m-auto mt-2 mb-2" style="width: 96%;">
-                        <div class="card-body row" style="padding: 0.5rem 1.75rem;">
-                            <p class="m-auto col-auto p-0">{{task.task}}</p>
-                            {% if task.due_date != None %}
-                                <p class="m-auto col-auto px-2">'   .{{task.due_date}}'</p>
-                            {% endif %}
-                            <span class="col"></span>
-                            <a class="btn col-auto p-0 m-auto" style="padding: 0rem;" href="{% url 'todo:todo-delete-task' task.id %}"><i class="bi bi-trash m-auto"></i></a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    </div>
+        {% endfor %}    
+    {% endif %}
+        
+    {% block content %}
+    {% endblock content %}
+        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

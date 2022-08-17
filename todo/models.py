@@ -1,5 +1,3 @@
-from pyexpat import model
-from tkinter.messagebox import NO
 from django.db import models
 from django.utils import timezone
 
