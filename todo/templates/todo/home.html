@@ -21,16 +21,25 @@
     </script>
 </head>
 <body>
-    <div class="root">
+    <div class="root" id="root">
     {% block topBar %}
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar sticky-top">
         <div class="container-fluid d-flex">
-            <a href="" class="navbar-brand justify-content-start">To Do</a>
+            <a href="{% url 'todo:todo-home' %}" class="navbar-brand justify-content-start">To Do</a>
             <form class="d-flex justify-content-center">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-warning" type="submit">Search</button>
             </form>
-            <i class="bi bi-person-circle account-icon justify-content-end"></i>
+            <div class="p-0 m-0 justify-content-end dropstart">
+                <a class="btn p-0 mx-0 my-auto" style="padding: 0rem" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle account-icon"></i></a>
+                <!--i class="bi bi-person-circle account-icon justify-content-end"></!--i-->
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><em class="dropdown-item">{{request.user}}</em></li>
+                    <li><a class="dropdown-item" type="button" onclick="">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" type="button" href="{% url 'logout' %}">Sign Out</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
     {% endblock topBar %}
@@ -53,8 +62,7 @@
                             {% csrf_token %}
                             <input type="text" name="task" class="form-control test" placeholder="Add a Task">
                             <div class="card-body lower-card row px-3" style="background: #f3f2f1;">
-                                <!--a href="" class="btn col-auto p-0 m-auto" style="padding: 0rem"><i class="bi bi-calendar-check m-auto"></i></a-->
-                                <div class="col-auto m-auto p-0">
+                                <div class="col-auto m-auto p-0 dropdown">
                                     <a class="btn col-auto p-0 m-auto" style="padding: 0rem" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-calendar-check m-auto"></i></a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                       <li><a class="dropdown-item" type="button" onclick="date_today()">Today</a></li>
@@ -88,7 +96,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-        dp = document.getElementById("dp")
+        dp = document.getElementById("dp");
         function date_today() {
             var today = new Date();
             var date = today.toISOString().substring(0,10);
