@@ -67,3 +67,6 @@
     margin: auto;
 }
 
+.trash_icon:hover {
+    color: red;
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load custom_tags %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -79,16 +80,30 @@
                     </div>
                 </div>
                 {% for task in tasks%}
+                    {% with temp as task.id|add_strings='isCompleted' %}
                     <div class="card m-auto mt-2 mb-2" style="width: 96%;">
                         <div class="card-body row" style="padding: 0.5rem 1.75rem;">
-                            <p class="m-auto col-auto p-0">{{task.task}}</p>
+                            <!--span style="width: auto; padding:0;">
+                                <form action="{% url 'todo:todo-complete-task' task.id %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input name={{temp}} value={{task.id}} class="form-check-input" style="margin-right: 1rem;" type="submit">
+                                </form>
+                            </!span-->
+                            {% if task.is_completed == False %}
+                                <a href="{% url 'todo:todo-complete-task' task.id %}" class="btn col-auto p-0" style="margin-right: 1rem;"><i class="bi bi-check-circle"></i></a>
+                                <p class="m-auto col-auto p-0">{{task.task}}</p>
+                            {% else %}
+                                <a href="{% url 'todo:todo-complete-task' task.id %}" class="btn col-auto p-0" style="margin-right: 1rem;"><i class="bi bi-check-circle" style="color: #28a745;"></i></a>
+                                <s class="m-auto col-auto p-0">{{task.task}}</s>
+                            {% endif %}
                             {% if task.due_date != None %}
                                 <p class="m-auto col-auto px-2">{{task.due_date|date:"d M y"}}</p>
                             {% endif %}
                             <span class="col"></span>
-                            <a class="btn col-auto p-0 m-auto" style="padding: 0rem;" href="{% url 'todo:todo-delete-task' task.id %}"><i class="bi bi-trash m-auto"></i></a>
+                            <a class="btn col-auto p-0 m-auto trash_icon" style="padding: 0rem;" href="{% url 'todo:todo-delete-task' task.id %}"><i class="bi bi-trash m-auto"></i></a>
                         </div>
                     </div>
+                    {% endwith %}
                 {% endfor %}
             </div>
         </div>
