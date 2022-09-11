@@ -33,7 +33,7 @@
 }
 
 .content {
-    width: 80%;
+    width: 100%;
     height: max(100vh, fit-content);
     background: #f3f2f1;
 }

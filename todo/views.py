@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Task
-import time
 
 @login_required
 def complete_task(request, id):
@@ -39,7 +38,7 @@ def add_task(request):
 def home(request):
     tasks = Task.objects.filter(task_user=request.user).order_by('due_date', 'date_created')
     context = {'tasks':tasks}
-    if request.method == 'POST' and 'searchSubmit' in request.POST:
-        tasks = [task for task in tasks if request.POST['taskSearch'] in task.task]
-        context = {'tasks':tasks}
+    if request.method == 'POST' and 'taskSearch' in request.POST:
+        tasks = [task for task in tasks if request.POST['taskSearch'].lower() in task.task.lower()]
+        context = {'tasks':tasks, 'search_arg':request.POST['taskSearch']}
     return render(request, 'todo/home.html', context=context)
